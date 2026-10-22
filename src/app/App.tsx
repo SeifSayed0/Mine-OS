@@ -163,7 +163,7 @@ function Assistant() {
     if (!apiKey.trim()) { setError('أضف مفتاح Gemini محليًا أولًا. لن يوضع المفتاح في الكود أو الأرشيف.'); return }
     setLoading(true)
     try {
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${encodeURIComponent(apiKey.trim())}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contents: [{ parts: [{ text: `أجب بالعربية باختصار وبنبرة هادئة. لا تفترض معلومات غير موجودة. سؤال المستخدم: ${question.trim()}` }] }], generationConfig: { temperature: 0.4, maxOutputTokens: 300 } }) })
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${encodeURIComponent(apiKey.trim())}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contents: [{ parts: [{ text: `أجب بالعربية باختصار وبنبرة هادئة. لا تفترض معلومات غير موجودة. سؤال المستخدم: ${question.trim()}` }] }], generationConfig: { temperature: 0.4, maxOutputTokens: 300 } }) })
       if (!response.ok) throw new Error(response.status === 400 || response.status === 403 ? 'مفتاح Gemini غير صالح أو غير مسموح لهذا الطلب.' : `تعذر الوصول إلى Gemini (${response.status}).`)
       const payload = await response.json() as { candidates?: { content?: { parts?: { text?: string }[] } }[] }
       const text = payload.candidates?.[0]?.content?.parts?.map(part => part.text || '').join('').trim()
